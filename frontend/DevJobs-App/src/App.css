@@ -1,3 +1,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Toggle Switch CSS */
+.toggle-checkbox:checked {
+  right: 0;
+  border-color: #010ca3;
+  transition: all 0.2s ease-in-out;
+}
+
+.toggle-checkbox:checked + .toggle-label {
+  background-color: #010ca3;
+  transition: all 0.2s ease-in-out;
+}
+
+.toggle-checkbox:focus {
+  outline: none;
+}
+
+.toggle-checkbox {
+  transition: all 0.2s ease-in-out;
+  border-color: #010ca3;
+}
+
+.toggle-label {
+  background-color: #010ca3;
+  transition: background-color 0.2s ease-in-out;
+}

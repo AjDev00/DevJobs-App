@@ -2,7 +2,11 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        mobileHeaderBgImage: "url('/src/assets/mobile/bg-pattern-header.svg')",
+      },
+    },
   },
   plugins: [],
 };
