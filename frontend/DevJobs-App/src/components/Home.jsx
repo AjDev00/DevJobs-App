@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
-import getJobs from "../services/devjobServices";
-import logo from "../assets/logos/coffeeroasters.svg";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import { getJobs } from "../services/devjobServices";
+import loadingImg from "../assets/loading.svg";
 
-export default function Home() {
+export default function Home({ openModal }) {
   const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   //get jobs.
   async function getAllJobs() {
     const data = await getJobs();
 
     setJobs(data.data);
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -23,10 +26,16 @@ export default function Home() {
 
   return (
     <div>
+      {loading && (
+        <div className="flex justify-center items-center mt-44">
+          <img src={loadingImg} alt="" className="w-7 animate-spin" />
+        </div>
+      )}
       {jobs &&
+        !loading &&
         jobs.map((job) => (
           <div key={job.id} className="px-6">
-            <div>
+            <Link to={!openModal && `/job-details/${job.id}`}>
               <div className="relative top-10 left-6 border border-blue-500 bg-blue-500 p-4 w-fit rounded-2xl">
                 <img src={showAllImage(job.logo)} alt="" />
               </div>
@@ -44,7 +53,7 @@ export default function Home() {
                   {job.location}
                 </div>
               </div>
-            </div>
+            </Link>
           </div>
         ))}
     </div>

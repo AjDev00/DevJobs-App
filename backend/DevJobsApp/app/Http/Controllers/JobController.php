@@ -15,4 +15,20 @@ class JobController extends Controller
             'data' => $jobs
         ]);
     }
+
+    public function show($id){
+        $job = Job::find($id);
+
+        if($job === null){
+            return response()->json([
+                'status' => false,
+                'message' => 'Id not found!'
+            ]);
+        }
+        
+        return response()->json([
+            'status' => true,
+            'data' => $job
+        ]);
+    }
 }
