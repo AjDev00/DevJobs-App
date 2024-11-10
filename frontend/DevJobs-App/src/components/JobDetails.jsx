@@ -44,9 +44,9 @@ export default function JobDetails() {
 
   return (
     <div>
-      <div>
+      {/* <div>
         <Header />
-      </div>
+      </div> */}
       {loading && (
         <div className="flex justify-center items-center mt-44">
           <img src={loadingImg} alt="" className="w-7 animate-spin" />
@@ -54,7 +54,7 @@ export default function JobDetails() {
       )}
       {!loading && (
         <div className="px-6 flex flex-col gap-8">
-          <div className="-mt-4 px-6 border border-white bg-white rounded-md flex flex-col justify-center items-center py-4">
+          <div className="-mt-4 px-6 border border-white bg-white dark:border-slate-800 dark:bg-slate-800 rounded-md flex flex-col justify-center items-center py-4">
             <div className="relative bottom-10 border border-blue-500 bg-blue-500 p-4 w-fit rounded-2xl">
               <img src={showAllImage(job.logo)} alt="" />
             </div>
@@ -64,13 +64,13 @@ export default function JobDetails() {
                 {job.company + ".com"}
               </div>
             </div>
-            <div className="mt-6 mb-2 border border-transparent p-3 px-5 bg-blue-50 hover:cursor-pointer w-fit rounded-md">
+            <div className="mt-6 mb-2 border border-transparent p-3 px-5 bg-blue-50 dark:border-slate-900 dark:bg-slate-900 hover:cursor-pointer w-fit rounded-md">
               <div className="text-blue-700 font-bold text-[15px]">
                 Company Site
               </div>
             </div>
           </div>
-          <div className="px-4 py-4 border border-transparent bg-white flex flex-col gap-1">
+          <div className="px-4 py-4 border border-transparent bg-white dark:border-slate-800 dark:bg-slate-800 rounded-md flex flex-col gap-1">
             <div className="flex flex-col gap-2">
               <div className="flex flex-row gap-2 opacity-40 text-[15px] font-semibold">
                 <div>{job.postedAt}</div>
@@ -122,10 +122,10 @@ export default function JobDetails() {
         </div>
       )}
       {!loading && (
-        <div className="flex flex-row justify-between border border-white bg-white py-4 px-6 mt-10 hover:cursor-pointer">
+        <div className="flex flex-row justify-between border border-white bg-white dark:border-slate-800 dark:bg-slate-800 py-4 px-6 mt-10 hover:cursor-pointer">
           <button
             onClick={() => history.go(-1)}
-            className="border border-transparent font-bold hover:cursor-pointer bg-slate-200 text-black p-2 rounded-md"
+            className="border border-transparent font-bold hover:cursor-pointer bg-slate-200 dark:border-slate-900 dark:bg-slate-900 dark:text-white text-black p-2 rounded-md"
           >
             Go Back
           </button>

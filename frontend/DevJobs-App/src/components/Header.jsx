@@ -2,7 +2,7 @@ import sunImg from "../assets/desktop/icon-sun.svg";
 import moonImg from "../assets/desktop/icon-moon.svg";
 import Toggle from "./Toggle";
 
-export default function Header() {
+export default function Header({ toggleSwitch, setToggleSwitch }) {
   return (
     <div>
       <div className="bg-mobileHeaderBgImage h-32">
@@ -12,7 +12,10 @@ export default function Header() {
             <div>
               <img src={sunImg} alt="" />
             </div>
-            <Toggle />
+            <Toggle
+              toggleSwitch={toggleSwitch}
+              setToggleSwitch={setToggleSwitch}
+            />
             <div>
               <img src={moonImg} alt="" />
             </div>

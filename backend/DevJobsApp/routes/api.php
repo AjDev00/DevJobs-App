@@ -22,3 +22,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('jobs', [JobController::class, 'index']);
 
 Route::get('jobs/{id}', [JobController::class, 'show']);
+
+Route::get('filter-jobs/{position}/{location}/{contract}', [JobController::class, 'display']);
