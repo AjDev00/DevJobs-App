@@ -1,9 +1,20 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
-import { getJobs } from "../services/devjobServices";
+import {
+  filterByTitle,
+  filterByTitleAndLocation,
+  getJobs,
+} from "../services/devjobServices";
 import loadingImg from "../assets/loading.svg";
+import toast from "react-hot-toast";
 
-export default function Home({ openModal, jobs, setJobs }) {
+export default function Home({
+  openModal,
+  jobs,
+  setJobs,
+  filterInputData,
+  filterModalInputData,
+}) {
   const [loading, setLoading] = useState(true);
 
   //get jobs.
@@ -14,8 +25,32 @@ export default function Home({ openModal, jobs, setJobs }) {
     setLoading(false);
   }
 
+  async function searchByTitle() {
+    const data = await filterByTitle(filterInputData);
+
+    // setFilterInputData("");
+    setJobs(data.data);
+    setLoading(false);
+  }
+
+  async function searchByLocation() {
+    const data = await filterByTitleAndLocation(
+      filterInputData,
+      filterModalInputData
+    );
+
+    setJobs(data.data);
+    setLoading(false);
+  }
+
   useEffect(() => {
-    getAllJobs();
+    if (!filterInputData) {
+      getAllJobs();
+    } else if (filterInputData && filterModalInputData) {
+      searchByLocation();
+    } else {
+      searchByTitle();
+    }
   }, []);
 
   //get images.

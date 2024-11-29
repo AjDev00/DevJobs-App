@@ -23,4 +23,12 @@ Route::get('jobs', [JobController::class, 'index']);
 
 Route::get('jobs/{id}', [JobController::class, 'show']);
 
-Route::get('filter-jobs/{position}/{location}/{contract}', [JobController::class, 'display']);
+Route::get('/filter-jobs/{position}/{contract?}/{location?}', [JobController::class, 'display']);
+
+Route::get('filter-jobs/{position}', [JobController::class, 'filterByPosition']);
+
+Route::get('filter-jobs-via-contract/{contract}', [JobController::class, 'filterByContract']);
+
+Route::get('filter-jobs-via-location/{location}/{contract?}', [JobController::class, 'filterByLocation']);
+
+Route::get('filter-job/{position}/{location}', [JobController::class, 'filterByPositionAndLocation']);

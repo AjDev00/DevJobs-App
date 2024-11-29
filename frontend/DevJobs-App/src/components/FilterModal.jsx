@@ -1,22 +1,93 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import locationImg from "../assets/desktop/icon-location.svg";
 import check from "../assets/desktop/icon-check.svg";
-import { searchJobsByLocation } from "../services/devjobServices";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import {
+  filterByContract,
+  filterByLocation,
+  filterByLocationAndContract,
+  filterByOnlyContract,
+  filterByTitle,
+  filterByTitleAndLocation,
+} from "../services/devjobServices";
+import toast from "react-hot-toast";
 
-export default function FilterModal({ setJobs, setOpenModal }) {
+export default function FilterModal({
+  setJobs,
+  setOpenModal,
+  filterModalInputData,
+  setFilterModalInputData,
+  filterInputData,
+}) {
   const [checked, setChecked] = useState(false);
-  const [inputData, setInputData] = useState("");
 
   async function searchByLocation() {
-    const data = await searchJobsByLocation(inputData);
+    if (filterInputData) {
+      const data = await filterByTitleAndLocation(
+        filterInputData,
+        filterModalInputData
+      );
 
-    setJobs(data.data);
+      setJobs(data.data);
+      setOpenModal(false);
+      if (data.status === true && data.data.length === 0) {
+        const data = await filterByTitle(filterInputData);
+        setJobs(data.data);
+
+        toast.error("No results for the location!");
+        setOpenModal(false);
+      }
+    } else if (!filterInputData && filterModalInputData) {
+      const data = await filterByLocation(filterModalInputData);
+
+      setJobs(data.data);
+      setOpenModal(false);
+    } else {
+      toast.error("Please input title.");
+      setOpenModal(false);
+    }
   }
 
-  useEffect(() => {
-    searchByLocation();
-  }, [inputData]);
+  async function searchByContract() {
+    const data = await filterByContract(filterInputData, filterModalInputData);
+
+    // console.log(data);
+    setJobs(data.data);
+    setOpenModal(false);
+  }
+
+  async function searchByOnlyContract() {
+    const data = await filterByOnlyContract();
+
+    // console.log(data);
+    setJobs(data.data);
+    setOpenModal(false);
+  }
+
+  function handleSearchClick() {
+    if (filterModalInputData) {
+      searchByLocation();
+    }
+
+    if (filterModalInputData && checked) {
+      async function handleLocationAndContract() {
+        const data = await filterByLocationAndContract(filterModalInputData);
+
+        // console.log(data);
+        setJobs(data.data);
+        setOpenModal(false);
+      }
+
+      handleLocationAndContract();
+    }
+
+    if (checked && filterInputData) {
+      searchByContract();
+    }
+
+    if (checked && !filterInputData && !filterModalInputData) {
+      searchByOnlyContract();
+    }
+  }
 
   return (
     <div className="flex justify-center">
@@ -28,10 +99,10 @@ export default function FilterModal({ setJobs, setOpenModal }) {
           <div>
             <input
               type="text"
-              value={inputData}
+              value={filterModalInputData}
               placeholder="Filter by location..."
               className="border border-white dark:border-slate-800 dark:bg-slate-800 p-2 bg-white tracking-wider rounded-md placeholder:tracking-wide placeholder:font-semibold focus:outline-none"
-              onChange={(e) => setInputData(e.target.value)}
+              onChange={(e) => setFilterModalInputData(e.target.value)}
             />
           </div>
         </div>
@@ -42,19 +113,19 @@ export default function FilterModal({ setJobs, setOpenModal }) {
           value="Full Time"
         >
           {!checked ? (
-            <div className="border border-slate-300 w-5 h-5">
-              {/* <img src={check} alt="" /> */}
+            <div className="border border-slate-300 w-5 h-5 p-1 rounded-sm">
+              <img src={check} alt="" className="dark:hidden" />
             </div>
           ) : (
-            <div className="border bg-blue-700 border-transparent w-5 h-5">
-              {/* <img src={check} alt="" className="invert" /> */}
+            <div className="border border-blue-700 bg-blue-700 w-5 h-5 p-1 rounded-sm">
+              <img src={check} alt="" className="mt-0" />
             </div>
           )}
           <div className="font-bold text-blue-700 dark:text-white">
             Full Time
           </div>
         </div>
-        <div onClick={() => setOpenModal(false)} className="mt-2">
+        <div onClick={handleSearchClick} className="mt-2">
           <button className="border border-blue-700 bg-blue-700 text-white font-bold w-full rounded-md p-2">
             Search
           </button>

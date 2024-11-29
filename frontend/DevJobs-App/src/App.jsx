@@ -10,11 +10,14 @@ import {
   Switch,
   Route,
 } from "react-router-dom/cjs/react-router-dom.min";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const [openModal, setOpenModal] = useState(false);
   const [jobs, setJobs] = useState([]);
   const [toggleSwitch, setToggleSwitch] = useState(false);
+  const [filterInputData, setFilterInputData] = useState("");
+  const [filterModalInputData, setFilterModalInputData] = useState("");
 
   function closeModalFromBackground() {
     if (openModal) {
@@ -22,14 +25,15 @@ function App() {
     }
   }
 
+  //toggle light and dark mode.
   useEffect(() => {
-    console.log(`Dark mode is now ${toggleSwitch ? "enabled" : "disabled"}`);
     if (toggleSwitch) {
       document.documentElement.classList.add("dark");
     } else {
       document.documentElement.classList.remove("dark");
     }
   }, [toggleSwitch]);
+
   return (
     <div className="dark:bg-slate-900 dark:text-white dark:duration-500 bg-slate-100 min-h-screen duration-500">
       <Router>
@@ -49,11 +53,19 @@ function App() {
               />
               <Filter
                 setOpenModal={setOpenModal}
-                openModal={openModal}
                 setJobs={setJobs}
+                filterInputData={filterInputData}
+                setFilterInputData={setFilterInputData}
+                setFilterModalInputData={setFilterModalInputData}
               />
               <div className="pb-8">
-                <Home openModal={openModal} jobs={jobs} setJobs={setJobs} />
+                <Home
+                  openModal={openModal}
+                  jobs={jobs}
+                  setJobs={setJobs}
+                  filterInputData={filterInputData}
+                  filterModalInputData={filterModalInputData}
+                />
               </div>
             </div>
             {openModal && (
@@ -61,6 +73,10 @@ function App() {
                 jobs={jobs}
                 setJobs={setJobs}
                 setOpenModal={setOpenModal}
+                filterModalInputData={filterModalInputData}
+                setFilterModalInputData={setFilterModalInputData}
+                filterInputData={filterInputData}
+                setFilterInputData={setFilterInputData}
               />
             )}
           </Route>
@@ -73,6 +89,7 @@ function App() {
           </Route>
         </Switch>
       </Router>
+      <Toaster />
     </div>
   );
 }
